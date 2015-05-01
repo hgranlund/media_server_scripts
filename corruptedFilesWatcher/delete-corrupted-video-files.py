@@ -45,7 +45,7 @@ def handleCorryptedFile(filePath):
 
 def deleteVideoFileIfCorrypted(filePath):
     try:
-        stdout, stderr = Popen('avconv -v error -i %s -f null ->&1' % shellquote(filePath), stdout=PIPE, stderr=PIPE, shell=True).communicate()
+        stdout, stderr = Popen('nice avconv -v error -i %s -f null ->&1' % shellquote(filePath), stdout=PIPE, stderr=PIPE, shell=True).communicate()
         if stderr or stdout:
             print('Stderr: %s' % stderr)
             print('stdout: %s' % stdout)
@@ -75,6 +75,7 @@ def parseCommands(argv):
                 print ('Deleting corrypted files')
                 delete = True
             if opt == '-i':
+                delete = True
                 fileToCheck = arg
     except getopt.GetoptError:
         pass
