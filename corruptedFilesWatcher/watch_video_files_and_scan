@@ -1,0 +1,11 @@
+#!/bin/bash
+
+inotifywait -mr  --timefmt '%d/%m/%y %H:%M' --format '%T %w %f' -e create -e moved_to /mnt | while read date time dir file; do
+
+       FILECHANGE=${dir}${file}
+ 
+       if  file -i $FILECHANGE | grep -q video; then
+        nice ./delete_corrupted_video_files.py -i $FILECHANGE
+        echo "At ${time} on ${date}, file $FILECHANGE was checked for damage."
+      fi
+    done
