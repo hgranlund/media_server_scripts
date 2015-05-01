@@ -1,0 +1,10 @@
+#!/bin/sh
+
+/usr/bin/host www.google.com > /dev/null 2>&1;
+
+date --iso-8601=minutes >> /var/log/ping_check
+if [ 0 -eq $? ]; then
+  echo 1 >> /var/log/ping_check;
+else
+  echo 0 >> /var/log/ping_check;
+fi
