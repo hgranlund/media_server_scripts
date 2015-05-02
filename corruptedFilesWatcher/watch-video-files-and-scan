@@ -7,6 +7,7 @@ inotifywait -mr  --timefmt '%d/%m/%y %H:%M' --format '%w%f' -e create -e moved_t
  time=$(date +"%H:%M")
 
  if  file -i "$FILECHANGE" | grep -q video; then
+    echo "At ${time} on ${date}, scanning file $FILECHANGE."
     nice /home/simenhg/github/media_server_scripts/corruptedFilesWatcher/delete-corrupted-video-files.py -D -i "$FILECHANGE"
     echo "At ${time} on ${date}, file $FILECHANGE was checked for damage."
 fi
