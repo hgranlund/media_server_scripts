@@ -29,31 +29,34 @@ def shellquote(s):
 def getLogFile():
     global f
     if not f:
-        f = open('deleteVideoFileIfCorrypted_Output.txt', 'w')
+        f = open('delete-video-file-if-corrypted-output.log', 'w')
+    return f
 
-    return f;
 
 def writeToFile(string):
     getLogFile().write('%s\n' % string)
 
 
 def handleCorryptedFile(filePath):
-    writeToFile(filePath)
     if delete:
         os.remove(filePath)
+        writeToFile('Deleted: %s' % filePath)
+    else:
+        writeToFile('File is corrypted: %s' % filePath)
 
 
 def deleteVideoFileIfCorrypted(filePath):
-    try:
-        stdout, stderr = Popen('nice avconv -v error -i %s -f null ->&1' % shellquote(filePath), stdout=PIPE, stderr=PIPE, shell=True).communicate()
-        if stderr or stdout:
-            print('Stderr: %s' % stderr)
-            print('stdout: %s' % stdout)
-            print ("Delete file %s" % filePath)
+    if os.path.isfile(filePath):
+        try:
+            stdout, stderr = Popen('nice avconv -v error -i %s -f null ->&1' % shellquote(filePath), stdout=PIPE, stderr=PIPE, shell=True).communicate()
+            if stderr or stdout:
+                print('Stderr: %s' % stderr)
+                print('stdout: %s' % stdout)
+                print ("Delete file %s" % filePath)
+                handleCorryptedFile(filePath)
+        except Exception, e:
+            print ('Delete file %s\n%s ' % (filePath, e))
             handleCorryptedFile(filePath)
-    except Exception, e:
-        print ('Delete file %s\n%s ' % (filePath, e))
-        handleCorryptedFile(filePath)
 
 
 def findAllVideoFilesInDir(dirToSearch):
@@ -72,10 +75,8 @@ def parseCommands(argv):
         opts, args = getopt.getopt(argv, "Di:o:", ["ifile=", "ofile="])
         for opt, arg in opts:
             if opt == '-D':
-                print ('Deleting corrypted files')
                 delete = True
             if opt == '-i':
-                delete = True
                 fileToCheck = arg
     except getopt.GetoptError:
         pass
