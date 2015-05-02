@@ -92,6 +92,8 @@ def main(argv):
         videoFiles = [fileToCheck]
     else:
         videoFiles = findAllVideoFilesInDir(dirToSearch)
+
+    videoFiles = filter(isVideoFile, videoFiles)
     numberOfVideos = len(videoFiles)
 
     for number, filePath in enumerate(videoFiles):
