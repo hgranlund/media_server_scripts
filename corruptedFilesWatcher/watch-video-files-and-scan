@@ -1,6 +1,6 @@
 #!/bin/bash
 
-inotifywait -mr  --timefmt '%d/%m/%y %H:%M' --format '%w%f' -e create -e moved_to /mnt | while read file; do
+inotifywait -mr  --timefmt '%d/%m/%y %H:%M' --format '%w%f' -e close_write -e moved_to /mnt | while read file; do
 
  FILECHANGE="${file}"
  date=$(date +"%d/%m/%y")
