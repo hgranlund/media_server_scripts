@@ -48,7 +48,7 @@ def handleCorryptedFile(filePath):
 def deleteVideoFileIfCorrypted(filePath):
     if os.path.isfile(filePath) and isVideoFile(filePath):
         try:
-            stdout, stderr = Popen('nice avconv -v error -i %s -f null ->&1' % shellquote(filePath), stdout=PIPE, stderr=PIPE, shell=True).communicate()
+            stdout, stderr = Popen('nice avconv -v error -threads 1 -i %s -f null ->&1' % shellquote(filePath), stdout=PIPE, stderr=PIPE, shell=True).communicate()
             if stderr or stdout:
                 print('Stderr: %s' % stderr)
                 print('stdout: %s' % stdout)
