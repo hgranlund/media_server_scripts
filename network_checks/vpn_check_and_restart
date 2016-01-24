@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# if we dont have any internet connection restart the vpn service
+
+/usr/bin/host www.google.com > /dev/null 2>&1;
+
+if ! [ 0 -eq $? ]; then
+  sudo service openvpn restart;
+fi
