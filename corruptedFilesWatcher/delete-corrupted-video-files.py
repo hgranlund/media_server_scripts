@@ -42,6 +42,7 @@ def handleCorryptedFile(filePath):
         os.remove(filePath)
         writeToFile('Deleted: %s' % filePath)
     else:
+        os.rename(filePath, filePath + '.corrypted')
         writeToFile('File is corrypted: %s' % filePath)
 
 

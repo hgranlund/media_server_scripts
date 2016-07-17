@@ -8,7 +8,7 @@ inotifywait -mr  --timefmt '%d/%m/%y %H:%M' --format '%w%f' -e close_write -e mo
 
  if  file -i "$FILECHANGE" | grep -q video; then
     echo "At ${time} on ${date}, scanning file $FILECHANGE."
-    nice /home/simenhg/github/media_server_scripts/corruptedFilesWatcher/delete-corrupted-video-files.py -D -i "$FILECHANGE"
+    nice /home/simenhg/github/media_server_scripts/corruptedFilesWatcher/delete-corrupted-video-files.py -i "$FILECHANGE"
     echo "At ${time} on ${date}, file $FILECHANGE was checked for damage."
 fi
 done
